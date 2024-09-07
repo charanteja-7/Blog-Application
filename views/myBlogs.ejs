@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include('./partials/head') %>
+    <title>My Blogs</title>
+</head>
+<body>
+    <%- include('./partials/nav') %>
+    <% if (blogs.length == 0) { %>
+        <h1 class="container mt-3">You have not created any blogs</h1>
+    <% } else {%>
+    <h1 class="container mt-3">My Blogs<span class="fs-2"> - <%= blogs.length %></span></h1>
+    <div class="container mt-3">
+        <div class="row">
+          <% blogs.forEach(blog => { %>
+            <div class="col-lg-4 col-md-6 mb-4">
+              <div class="card h-100">
+                <img src="<%= blog.coverImageURL %>" class="card-img-top" alt="coverImage">
+                <div class="card-body d-flex flex-column">
+                  <h5 class="card-title"><%= blog.title %></h5>
+                  <p class="card-text text-truncate"><%= blog.body %></p>
+                  <div class="mt-auto">
+                    <a href="/blog/<%= blog._id %>" class="btn btn-primary w-30">Read Blog</a>
+                    <% if (blog.createdBy._id == user._id) { %>
+                        <form action="/blog/<%= blog._id %>?_method=DELETE" method="POST" style="display:inline;">
+                          <button type="submit" class="btn btn-danger w-30">Delete Blog</button>
+                        </form>
+                        <form action="/blog/<%= blog._id %>/edit" method="GET" style="display:inline;">
+                            <button type="submit" class="btn btn-warning w-30">Edit Blog</button>
+                        </form>
+                    <% } %>
+
+                  </div>
+                </div>
+              </div>
+            </div>
+          <% }) %>
+        </div>
+    </div>
+     <% } %>
+    <%- include('./partials/scripts') %>
+</body>
+</html>
